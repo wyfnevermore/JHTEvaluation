@@ -1,0 +1,17 @@
+[
+    {"id":"1001","productName":"空调被","evalVersion":"V001","evalNumber":"123400","spec":"S/B","evalDate":"2017-07-10 17:50:22","unitPrice":"20.32","implGMarginRate":"12.00"},
+    {"id":"1002","productName":"被套","evalVersion":"V002","evalNumber":"123489","spec":"D/B","evalDate":"2017-07-12 17:50:22","unitPrice":"4.32","implGMarginRate":"12.00"},
+    {"id":"1003","productName":"被套1","evalVersion":"V001","evalNumber":"12348","spec":"Q/B","evalDate":"2017-07-11 17:50:22","unitPrice":"22.32","implGMarginRate":"12.00"},
+    {"id":"1004","productName":"空调被","evalVersion":"V001","evalNumber":"123467","spec":"S/B","evalDate":"2017-07-10 17:50:22","unitPrice":"20.32","implGMarginRate":"12.00"},
+    {"id":"1005","productName":"被套","evalVersion":"V002","evalNumber":"123414","spec":"D/B","evalDate":"2017-07-12 17:50:22","unitPrice":"4.32","implGMarginRate":"12.00"},
+    {"id":"1006","productName":"被套1","evalVersion":"V001","evalNumber":"123413","spec":"Q/B","evalDate":"2017-07-11 17:50:22","unitPrice":"22.32","implGMarginRate":"12.00"},
+    {"id":"1007","productName":"空调被","evalVersion":"V001","evalNumber":"123413","spec":"S/B","evalDate":"2017-07-10 17:50:22","unitPrice":"20.32","implGMarginRate":"12.00"},
+    {"id":"1008","productName":"被套","evalVersion":"V002","evalNumber":"123413","spec":"D/B","evalDate":"2017-07-12 17:50:22","unitPrice":"4.32","implGMarginRate":"12.00"},
+    {"id":"1009","productName":"被套1","evalVersion":"V001","evalNumber":"12342","spec":"Q/B","evalDate":"2017-07-11 17:50:22","unitPrice":"22.32","implGMarginRate":"12.00"}, 
+    {"id":"1022","productName":"空调被","evalVersion":"V001","evalNumber":"1234323","spec":"S/B","evalDate":"2017-07-10 17:50:22","unitPrice":"20.32","implGMarginRate":"12.00"},
+    {"id":"1010","productName":"被套","evalVersion":"V002","evalNumber":"1234113","spec":"D/B","evalDate":"2017-07-12 17:50:22","unitPrice":"4.32","implGMarginRate":"12.00"},
+    {"id":"1011","productName":"被套1","evalVersion":"V001","evalNumber":"123456","spec":"Q/B","evalDate":"2017-07-11 17:50:22","unitPrice":"22.32","implGMarginRate":"12.00"}, 
+    {"id":"1021","productName":"空调被","evalVersion":"V001","evalNumber":"123444","spec":"S/B","evalDate":"2017-07-10 17:50:22","unitPrice":"20.32","implGMarginRate":"12.00"},
+    {"id":"1012","productName":"被套","evalVersion":"V002","evalNumber":"123452","spec":"D/B","evalDate":"2017-07-12 17:50:22","unitPrice":"4.32","implGMarginRate":"12.00"},
+    {"id":"1013","productName":"被套1","evalVersion":"V001","evalNumber":"123423","spec":"Q/B","evalDate":"2017-07-11 17:50:22","unitPrice":"22.32","implGMarginRate":"12.00"}
+]

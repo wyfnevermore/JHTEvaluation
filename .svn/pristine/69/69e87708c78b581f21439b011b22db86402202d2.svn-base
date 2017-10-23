@@ -1,0 +1,12 @@
+package com.chinaias.util;
+
+import org.springframework.beans.factory.InitializingBean;
+
+public class InitTasks implements InitializingBean {  
+      
+    public void afterPropertiesSet()  
+    {
+    	System.out.println("============test============");
+    } 
+
+}  

@@ -1,0 +1,463 @@
+
+var addOrUpdate = "add";
+//删除一行
+function changeMaterialPrice(paramJson){
+	$("#materielPrice").val(paramJson.price);
+}
+$(function() {
+	
+var path = "/JHTEvaluation";
+/*	
+	function getGrossProfitRate(param){
+		customName = JSON.parse(param).customName;//获取客户全称
+	}
+	bindSearchEl($("#customerID"),path+"/dataBase-config/eval-customerData.data",null,getGrossProfitRate,"brifeName",["customID","brifeName"],220);
+
+	//贸易形式
+	$.getJSON(path + "/dataBase-config/eval-tradeForm.data",function(data){
+		var tradeForm = data;
+		var temp_html3;
+		$.each(tradeForm,function(i, obj){
+			temp_html3+="<option value='"+obj.tradeFormt+"'>"+obj.tradeFormt+"</option>";
+		});
+		$("#tradeForm").html(temp_html3);
+	});
+*/
+
+	//交易币种
+	$.getJSON(path + "/dataBase-config/eval_quoteCurrency.data",function(data){
+		var tradeForm = data;
+		var temp_html3;
+		$.each(tradeForm,function(i, obj){
+			temp_html3+="<option value='"+obj.quoteCurrencyName+"'>"+obj.quoteCurrencyName+"</option>";
+		});
+		$("#currencyCode").html(temp_html3);
+	});
+
+	//var jsonData = JSON.parse(salesOrder);
+	//可能多个对象
+	var initHtml = $("#specItem0").clone();
+	for(var i=0,l=salesOrder.length;i<l;i++){
+		var tabName="订单"+i;
+		var html = initHtml;
+		var id = "specItem"+i;
+		if(i==0){
+			$("#addTabs").append('<li class="active"><a href="#specItem'+i+'" data-toggle="tab">'+tabName+'</a></li>');
+			$("#specItem0").addClass("active");
+		}else{
+			$("#addTabs").append('<li><a href="#specItem'+i+'" data-toggle="tab">'+"订单"+i+'</a></li>');
+			html.attr('id',id);
+			$("#tabDivs").append(initHtml);
+		}
+		$("#"+id).find("input[name='orderDate']").datetimepicker({
+			format: 'yyyy-mm-dd hh:ii',//日期的格式
+			startDate:'1900-01-01',//选择器的开始日期
+			autoclose:true,//日期选择完成后是否关闭选择框
+			bootcssVer:3,//显示向左向右的箭头
+			language:'cn',//语言
+			minView:0,//表示日期选择的最小范围，默认是hour
+			initialDate:new Date(),
+		});
+		//先存一下headerId，隐藏的input里，后面修改用到
+		$("#"+id).find("input[name='headerId']").val(salesOrder[i]["soHeader"]["headerId"]);
+		//头信息
+		$("#"+id).find("input[name='orgName']").val(salesOrder[i]["soHeader"]["orgName"]);
+		$("#"+id).find("input[name='paymentTerm']").val(salesOrder[i]["soHeader"]["paymentTerm"]);
+		$("#"+id).find("input[name='orderType']").find("option:selected").text(salesOrder[i]["soHeader"]["orderType"]);
+		$("#"+id).find("input[name='customerNumber']").val(salesOrder[i]["soHeader"]["customerNumber"]);
+		$("#"+id).find("input[name='customerAddress']").val(salesOrder[i]["soHeader"]["customerAddress"]);
+		$("#"+id).find("input[name='salePersonNumber']").val(salesOrder[i]["soHeader"]["salePersonNumber"]);
+		//tps.find("input[name='orderDate']").val()
+		$("#"+id).find("input[name='orderDate']").val(salesOrder[i]["soHeader"]["orderDate"]);
+		$("#"+id).find("select[name='currencyCode']").find("option:selected").text(salesOrder[i]["soHeader"]["currencyCode"]);
+		$("#"+id).find("select[name='shipMethod']").find("option:selected").text(salesOrder[i]["soHeader"]["shipMethod"]);
+		$("#"+id).find("input[name='shipFrom']").val(salesOrder[i]["soHeader"]["shipFrom"]);
+		$("#"+id).find("input[name='projectNumber']").val(salesOrder[i]["soHeader"]["projectNumber"]);
+		$("#"+id).find("input[name='departmentName']").val(salesOrder[i]["soHeader"]["shipFrom"]);
+		$("#"+id).find("input[name='tradeTerm']").val(salesOrder[i]["soHeader"]["tradeTerm"]);
+		$("#"+id).find("input[name='discountRate']").val(salesOrder[i]["soHeader"]["discountRate"]);
+	   //行信息
+		//salesOrder[i]["soLineList"][j]["itemNumber"]
+		for(var j=0;j<salesOrder[i]["soLineList"].length;j++){
+			var html = "<tr><td style=\"display:none;\">"+salesOrder[i]["soLineList"][j]["lineId"]+"</td><td>1011</td><td>" +salesOrder[i]["soLineList"][j]["orderQuantity"]
+			+ "</td><td>" +salesOrder[i]["soLineList"][j]["price"] + "</td><td>" +salesOrder[i]["soLineList"][j]["requestDate"]
+			+ "</td><td>" + salesOrder[i]["soLineList"][j]["custPoNumber"] + "</td><td>" + salesOrder[i]["soLineList"][j]["enProductName"]
+			+ "</td><td>" + salesOrder[i]["soLineList"][j]["calculatePrice"]+ "</td><td><div class=\"btn-group\"><a onclick=\"addSalesOrder()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;&nbsp;<div class=\"btn-group\"><a onClick=\"getSalesOrder(this)\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td></tr>";
+			//通过表体id把显示文本显示到网页中
+			$("#"+id).find("tbody[name='salesTbody']").append(html);
+			//先存一遍行信息
+			$.ajax({
+				type : "POST",
+				async : false,
+				contentType : 'application/json;charset=utf-8',
+				url : "/JHTEvaluation/saveInitSoLine.do?headerId="+$("#"+id).find("input[name='headerId']").val(),
+				data :  JSON.stringify(salesOrder[i]["soLineList"][j]),
+				dataType : "text",
+				success : function(json) {
+				}
+			});
+		}
+		//salesOrder[i]["soCommissionsList"][m]["orgName"]
+		//佣金行信息
+
+		for(var m=0;m<salesOrder[i]["soCommissionsList"].length;m++){
+			var html = "<tr><td style=\"display:none;\">"+salesOrder[i]["soCommissionsList"][m]["commissionsId"]+"</td><td>2010</td><td>" + salesOrder[i]["soCommissionsList"][m]["sourceDocType"]
+					+ "</td><td>" + salesOrder[i]["soCommissionsList"][m]["commissionLineNum"]+ "</td><td>" +salesOrder[i]["soCommissionsList"][m]["commissionTypeName"]
+					+ "</td><td>" + salesOrder[i]["soCommissionsList"][m]["commissionRate"] + "</td><td>" + salesOrder[i]["soCommissionsList"][m]["commissionPrice"]
+					+ "</td><td>" + salesOrder[i]["soCommissionsList"][m]["vendorName"] +"</td><td><div class=\"btn-group\"><a onclick=\"addHireCost()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;&nbsp;<div class=\"btn-group\"><a onClick=\"getHireCost(this)\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td></tr>";
+			//佣金行先保存进数据库
+			$("#"+id).find("tbody[name='hireTbody']").append(html);
+			$.ajax({
+				type : "POST",
+				async : false,
+				contentType : 'application/json;charset=utf-8',
+				url : "/JHTEvaluation/saveInitSoCom.do?headerId="+$("#"+id).find("input[name='headerId']").val(),
+				data :  JSON.stringify(salesOrder[i]["soCommissionsList"][m]),
+				dataType : "text",
+				success : function(json) {
+			}
+			});
+		}
+		
+		//初始化项目信息
+		$.ajax({
+			type : "POST",
+			async : false,
+			contentType : 'application/json;charset=utf-8',
+			url : "/JHTEvaluation/queryProject.do?projectId="+salesOrder[i]["soHeader"]["projectId"],
+			dataType : "text",
+			success : function(json) {
+			var jsonObj = eval('(' + json + ')');
+			var html = "<tr><td style=\"display:none;\">"+jsonObj["projectId"]+"</td><td>"+jsonObj["projectOrgName"]+"</td><td>" + jsonObj["projectName"]
+			+ "</td><td>" + jsonObj["projectType"]+ "</td><td>" +jsonObj["projectNumber"]
+			+ "</td><td>" + jsonObj["invWgFlag"] + "</td><td>" + jsonObj["invT2sFlag"]
+			+ "</td><td>" + jsonObj["invWmFlag"] +"</td><td>" + jsonObj["invDjFlag"]
+			+"</td><td>" + jsonObj["backupCustomer"] +"</td><td>" + jsonObj["departmentName"]
+			+"</td><td><div class=\"btn-group\"><a onclick=\"addProject()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a></div></td></tr>";
+			$("#"+id).find("tbody[name='projectTbody']").append(html);
+		}
+		});
+	}
+	bindSearchEl($("#materielNum"),path+"/dataBase-config/eval-materialName.data",null,changeMaterialPrice,"sku",["sku","name"],295);
+});
+
+//添加项目
+function addProject(){
+	addOrUpdate = "add";
+	$("#addProject").modal("show");
+	
+}
+
+
+
+function delRow(obj){
+	if($(obj).parents("tbody").children().length>1){
+		var res = confirm('确认要删除吗？');  
+		if(res == true){  
+			$(obj).parents("tr").remove();  
+		}
+	}	
+}
+
+//添加订单信息
+function addSalesOrder(){
+	addOrUpdate = "add";
+	$("#addSalesOrder").modal("show");
+}
+
+//添加佣金行信息
+function addHireCost(){
+	addOrUpdate = "add";
+	$("#addHireCost").modal("show");
+}
+
+//点击佣金信息编辑的小按钮
+function getHireCost(obj) {
+	addOrUpdate = "update";
+	//获取选中的行
+	tr = $(obj).closest("tr");
+	//获取列值，赋值给弹出框
+//	$("#orgName").val(tr.find("td:eq(1)").html());
+//	$("#sourceDocType").find("option:selected").text(tr.find("td:eq(2)").html());
+//	$("#commissionLineNum").val(tr.find("td:eq(3)").html());
+//	$("#commissionTypeName").val(tr.find("td:eq(4)").html());
+//	$("#commissionRate").val(tr.find("td:eq(5)").html());
+//	$("#commissionPrice").val(tr.find("td:eq(6)").html());
+//	$("#vendorName").val(tr.find("td:eq(7)").html());
+//	
+	//点击编辑其实是从数据库里调出来，再给页面赋值
+	var soComissionsId = tr.find("td:eq(0)").html();
+	$.ajax({
+		type : "POST",
+		async : false,
+		contentType : 'application/json;charset=utf-8',
+		url : "/JHTEvaluation/querySoComById.do?soComissionsId="+soComissionsId,
+		dataType : "text",
+		success : function(json) {
+			if(json==null){
+				alert("无该条数据！");
+				return;
+			}
+		//var jsonObj＝ eval ("(" + jsonStr + ")");
+		var jsonObj = JSON.parse(json);
+		$("#orgName").val(jsonObj["orgName"]);
+		$("#sourceDocType").find("option:selected").text(jsonObj["sourceDocType"]);
+		$("#commissionLineNum").val(jsonObj["commissionLineNum"]);
+		$("#commissionTypeName").val(jsonObj["commissionTypeName"]);
+		$("#commissionRate").val(jsonObj["commissionRate"]);
+		$("#commissionPrice").val(jsonObj["commissionPrice"]);
+		$("#vendorName").val(jsonObj["vendorName"]);
+		$("#lineNum").find("option:selected").text(jsonObj["lineNum"]);
+		}
+	});	
+	$("#addHireCost").modal("show");
+}
+
+
+//点击编辑的小按钮
+function getSalesOrder(obj) {
+	addOrUpdate = "update";
+	//获取选中的行
+	tr = $(obj).closest("tr");
+	$("#addSalesOrder").modal("show");
+  
+	$("#requestDate").datetimepicker({
+		format: 'yyyy-mm-dd hh:ii',//日期的格式
+		startDate:'1900-01-01',//选择器的开始日期
+		autoclose:true,//日期选择完成后是否关闭选择框
+		bootcssVer:3,//显示向左向右的箭头
+		language:'cn',//语言
+		minView:0,//表示日期选择的最小范围，默认是hour
+		initialDate:new Date(),
+	});
+	//获取列值，赋值给弹出框
+	$("#materielNum").val(tr.find("td:eq(1)").html());
+	$("#orderNum").val(tr.find("td:eq(2)").html());
+	$("#materielPrice").val(tr.find("td:eq(3)").html());
+	$("#requestDate").val(tr.find("td:eq(4)").html());
+	$("#custmerPONum").val(tr.find("td:eq(5)").html());
+	$("#englishName").val(tr.find("td:eq(6)").html());
+	$("#evalUnitPrice").val(tr.find("td:eq(7)").html());
+}
+
+
+
+//行信息里点击添加或编辑里的确定按钮
+function updateSalesOrder(){
+	$("#asoForm").submit();
+	var mixf = $("#asoForm input").hasClass('parsley-error');
+	if(mixf){
+		return;
+	}
+	$("#addSalesOrder").modal("hide");
+	$(".modal-backdrop").remove();
+	$("body").removeClass('modal-open');
+	var tps = $("#tabDivs").find("div[class='tab-pane active']");
+	var headerId = tps.find("input[name='headerId']").val();
+	if(addOrUpdate == "add"){
+		//前台显示
+		var html = "<tr><td>" +$("#materielNum").val()
+		+ "</td><td>" +$("#orderNum").val()
+		+ "</td><td>" +$("#materielPrice").val() + "</td><td>" +$("#requestDate").val()
+		+ "</td><td>" + $("#custmerPONum").val() + "</td><td>" +$("#englishName").val()
+		+ "</td><td>" +$("#evalUnitPrice").val()+"</td><td><div class=\"btn-group\"><a onclick=\"addSalesOrder()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;&nbsp;<div class=\"btn-group\"><a onClick=\"getSalesOrder(this)\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td></tr>";
+		//通过表体id把显示文本显示到网页中
+		$("#tabDivs").find("div[class='tab-pane active']").find("tbody[name='salesTbody']").append(html);
+		//ajax新增行信息
+		var soLineResult = {"headerId":headerId,"itemNumber":$("#materielNum").val(),"orderNum":$("#orderQuantity").val(),"itemUom":$("#materielUnit").val(),
+				"price":$("#materielPrice").val(),"requestDate":$("#requestDate").val(),"custPoNumber":$("#custmerPONum").val(),"internalPrice":$("#settlementPrice").val(),
+				"brandTerminal":$("#brandTerminal").val(),"customerTerminal":$("#clientTerminal").val(),"enProductName":$("#englishName").val(),
+				"calculatePrice":$("#evalUnitPrice").val(),"costRate":$("#costRate").val()};
+		
+		$.ajax({
+			type : "POST",
+			async : false,
+			contentType : 'application/json;charset=utf-8',
+			url : "/JHTEvaluation/saveSoLine.do",
+			data :  JSON.stringify(soLineResult),
+			dataType : "text",
+			success : function(json) {
+				alert(json);
+			}
+		});
+	
+	}else if(addOrUpdate == "update"){
+		console.log("update Line");
+		var soLineResult = {"headerId":headerId,"itemNumber":$("#materielNum").val(),"orderNum":$("#orderNum").val(),"itemUom":$("#materielUnit").val(),
+				"price":$("#materielPrice").val(),"requestDate":$("#requestDate").val(),"custPoNumber":$("#custmerPONum").val(),"internalPrice":$("#settlementPrice").val(),
+				"brandTerminal":$("#brandTerminal").val(),"customerTerminal":$("#clientTerminal").val(),"enProductName":$("#englishName").val(),
+				"calculatePrice":$("#evalUnitPrice").val(),"costRate":$("#costRatio").val()};
+		
+		var soLineId = tr.find("td:eq(0)").text();
+		alert(soLineId);
+		tr.find("td:eq(1)").text($("#materielNum").val()); 
+		tr.find("td:eq(2)").text($("#orderNum").val()) ; 
+		tr.find("td:eq(3)").text($("#materielPrice").val()) ; 
+		tr.find("td:eq(4)").text($("#requestDate").val()) ; 
+		tr.find("td:eq(5)").text($("#custmerPONum").val()) ; 
+		tr.find("td:eq(6)").text($("#englishName").val()) ; 
+		tr.find("td:eq(7)").text($("#evalUnitPrice").val()) ; 
+		
+		$.ajax({
+			type : "POST",
+			async : false,
+			contentType : 'application/json;charset=utf-8',
+			url : "/JHTEvaluation/updateSoLine.do?soLineId="+soLineId,
+			data :  JSON.stringify(soLineResult),
+			dataType : "text",
+			success : function(json) {
+				alert(json);
+			}
+		});
+	
+	}
+}
+
+
+//yongjing点击添加或编辑里的确定按钮
+function updateHireCost(){
+	$("#hireCostForm").submit();
+	var mixf = $("#hireCostForm input").hasClass('parsley-error');
+	if(mixf){
+		return;
+	}
+	$("#addHireCost").modal("hide");
+	$(".modal-backdrop").remove();
+	$("body").removeClass('modal-open');
+	var tps = $("#tabDivs").find("div[class='tab-pane active']");
+	var headerId = tps.find("input[name='headerId']").val();
+	if(addOrUpdate == "add"){
+		$.ajax({
+			type : "POST",
+			async : false,
+			contentType : 'application/json;charset=utf-8',
+			url : "/JHTEvaluation/saveSoCommission.do?headerId="+tps.find("input[name='headerId']").val(),
+			data :  $("#hireCostForm").serialize(),
+			dataType : "text",
+			success : function(json) {
+				alert(json);
+			}
+		});
+		
+		var html = "<tr><td>" + $("#orgName").val()
+		+ "</td><td>" +$("#sourceDocType").find("option:selected").text()
+		+ "</td><td>" +$("#commissionLineNum").val() + "</td><td>" +$("#commissionTypeName").val()
+		+ "</td><td>" + $("#commissionRate").val() + "</td><td>" +$("#commissionPrice").val()
+		+ "</td><td>" +$("#vendorName").val()+"</td><td><div class=\"btn-group\"><a onclick=\"addHireCost()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;&nbsp;<div class=\"btn-group\"><a onClick=\"getHireCost(this)\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td></tr>";
+		//通过表体id把显示文本显示到网页中
+		$("#tabDivs").find("div[class='tab-pane active']").find("tbody[name='hireTbody']").append(html);
+		
+		
+		
+	}else if(addOrUpdate == "update"){
+		
+		$.ajax({
+			type : "POST",
+			async : false,
+			contentType : 'application/json;charset=utf-8',
+			url : "/JHTEvaluation/updateSoCommission.do?headerId="+tps.find("input[name='headerId']").val(),
+			data :  $("#hireCostForm").serialize(),
+			dataType : "text",
+			success : function(json) {
+				alert(json);
+			}
+		});
+		
+		tr.find("td:eq(1)").text($("#orgName").val()); 
+		tr.find("td:eq(2)").text($("#sourceDocType").val()) ; 
+		tr.find("td:eq(3)").text($("#commissionLineNum").val()) ; 
+		tr.find("td:eq(4)").text($("#commissionTypeName").val()) ; 
+		tr.find("td:eq(5)").text($("#commissionRate").val()) ; 
+		tr.find("td:eq(6)").text($("#commissionPrice").val()) ; 
+		tr.find("td:eq(7)").text($("#vendorName").val()) ; 
+	}
+}
+
+//项目点击添加或编辑里的确定按钮
+function updateProject(){
+	$.ajax({
+		type : "POST",
+		async : false,
+		contentType : 'application/json;charset=utf-8',
+		url : "/JHTEvaluation/saveProject.do",
+		data :  $("#projectForm").serialize(),
+		dataType : "text",
+		success : function(json) {
+			alert(json);
+		}
+	});
+	
+	var html = "<tr><td>" + $("#projectOrgName").val() +"</td><td>" + $("#projectName").val()  
+	+ "</td><td>" +$("#projectType").find("option:selected").text()
+	+ "</td><td>" +$("#projectNumber").val() + "</td><td>" +$("#invWgFlag").val()
+	+ "</td><td>" + $("#invT2sFlag").val() + "</td><td>" +$("#invWmFlag").val()
+	+ "</td><td>" +$("#invDjFlag").val()+ "</td><td>" +$("#backupCustomer").val()
+	+ "</td><td>" +$("#departmentName").val()
+	+"</td><td><div class=\"btn-group\"><a onclick=\"addProject()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a></div></td></tr>";
+	//通过表体id把显示文本显示到网页中
+	$("#tabDivs").find("div[class='tab-pane active']").find("tbody[name='projectTbody']").append(html);
+	$("#addProject").modal("hide");
+	$(".modal-backdrop").remove();
+	$("body").removeClass('modal-open');
+}
+
+
+
+//保持订单
+function saveOrder(obj){
+	//获取页面的头信息，行信息，佣金信息保存入库，因为可能有改变，所以直接生成新的销售订单]
+	var tps = $("#tabDivs").find("div[class='tab-pane active']");
+	/*var type="";
+	var name = $(obj).attr("name");
+	//var userSales = $("#tabDivs").find("div[class='tab-pane active']").find("input[name='customerNumber']").text();
+	var tps = $("#tabDivs").find("div[class='tab-pane active']");
+	if(name == "save"){
+		type = tps.find("input[name='orderType']").val();
+	}else if(name == "sale"){
+		type = "销售订单";
+	}else if(name == "prepare"){
+		type = "备库订单";
+	}*/
+	
+	//ajax保存头信息
+	var soHeader = {"headerId":tps.find("input[name='headerId']").val(),
+			"paymentTerm":tps.find("input[name='paymentTerm']").val(),
+		"orgName":tps.find("*[name='orgName']").val(),
+		"orderType":tps.find("*[name='orderType']").find("option:selected").text(),
+		"customerNumber":tps.find("input[name='customerNumber']").val(),
+		"customerAddress":tps.find("input[name='customerAddress']").val(),
+		"salePersonNumber":tps.find("input[name='salePersonNumber']").val(),
+		//$("#orderDate").val(jsonData["orderDate"]); 
+		"orderDate":tps.find("input[name='orderDate']").val(),
+		"currencyCode":tps.find("*[name='currencyCode']").val(),
+		"shipMethod":tps.find("*[name='shipMethod']").find("option:selected").text(),
+		"shipFrom":tps.find("*[name='shipFrom']").find("option:selected").text(),
+		"projectNumber":tps.find("input[name='projectNumber']").val(),
+		"departmentName":tps.find("input[name='departmentName']").val(),
+		"tradeTerm":tps.find("input[name='tradeTerm']").val(),
+		"discountRate":tps.find("input[name='discountRate']").val(),"projectId":"2018"};
+	
+	$.ajax({
+		type : "POST",
+		async : false,
+		contentType : 'application/json;charset=utf-8',
+		url : "/JHTEvaluation/saveSoHeader.do",
+		data :  JSON.stringify(soHeader),
+		dataType : "text",
+		success : function(json) {
+			alert(json);
+		}
+	});	
+}
+
+
+
+
+//上传订单与其他系统对接上传
+function uploadOrder(){
+	alert("上传成功！");
+}
+
+
+
+

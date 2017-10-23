@@ -1,0 +1,148 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%String path=request.getContextPath(); %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Insert title here</title>
+<meta charset="utf-8" />
+  <title>JHT测算平台 | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="<%=path%>/css/app.v2.css" type="text/css" />
+  <link rel="stylesheet" href="<%=path%>/css/font.css" type="text/css" cache="false" />
+  <link rel='stylesheet' href="<%=path%>/css/bootstrap-datetimepicker.min.css" type='text/css'>
+  <link rel="stylesheet" href="<%=path%>/Script/datatables/datatables.css" type="text/css" cache="false">
+  <script src="<%=path%>/Script/app.v2.js"></script>
+  <script src="<%=path%>/Script/jquery.min.js"></script>
+  <script src="<%=path%>/Script/bootstrap-table.js"></script>
+  <script src="<%=path%>/js/sharePrice/priceHistory.js"></script>
+  <script type="text/javascript" src="<%=path%>/Script/bootstrap.min.js"></script>
+ <script type="text/javascript" src="<%=path%>/Script/datepicker/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+</head>
+<body>
+<section class="vbox">
+  <section>
+    <section class="hbox stretch"> 
+      <section id="content">
+        <section class="vbox">
+          <section class="scrollable padder">
+            <section class="panel panel-default">
+              <header class="panel-heading"> 条件筛选 </header>
+              <div class="row text-sm wrapper">
+                <table style="width:100%;">
+                  <tr>
+                    <td width="7%"><label>报价单号：</label></td>
+                    <td width="10%"><input type="text" style="" class="form-control " ></td>
+                    <td width="7%"><label>报价人：</label></td>
+                    <td width="10%"><input type="text" style="" class="form-control " ></td>
+                    <td width="7%"><label>客户：</label></td>
+                    <td width="10%"><input type="text" style="" class="form-control " ></td>
+                    <td width="7%"></td>
+                    <td width="5%"><a class="btn btn-primary" >查找</a></td>
+                    
+                  </tr>
+                </table>
+              </div>
+              <div class="table-responsive">
+                <table id="hisSharePrice" style="width: 100%;border-collapse: collapse;table-layout: fixed;" class="table table-striped b-t b-light text-sm">
+                </table>
+              </div>
+            </section>
+          </section>
+        </section>
+        <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a> </section>
+      <aside class="bg-light lter b-l aside-md hide" id="notes">
+        <div class="wrapper">Notification</div>
+      </aside>
+    </section>
+  </section>
+</section>
+
+
+
+     <!--历史报价编辑弹窗  -->
+	<div class="modal fade" id="sharePrice">
+		<div class="modal-dialog" style="width: 600px" >
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="row">
+					<form id="profitForm" class="form-horizontal" data-validate="parsley" method="post" onsubmit="return false">
+							<table style="text-align: right;" class="table table-striped b-t b-light text-sm">
+								<tbody>
+								
+								    <tr>
+										<td ><label >报价单号：</label ></td>
+										<td><input type="text" class="form-control" name="qoutationNumber" id="qoutationNumber" data-required="true">
+      									</td>
+										<td><label >客户：</label></td>
+										<td><input type="text" class="form-control" name="customId" id="customId"  data-required="true"></td>
+									</tr>
+									<tr>
+										<td ><label >版本号：</label ></td>
+										<td><input type="text" class="form-control" name="qoVersion" id="qoVersion" data-required="true" data-type="number">
+      									</td>
+										<td><label >报价人：</label></td>
+										<td><input type="text" class="form-control" name="createUserId" id="createUserId" data-required="true" data-type="number"></td>
+									</tr>
+									<tr>
+										<td><label >报价时间：</label></td>
+										<td><input type="text" class="form-control" id="qoutationTime"  class="form-control"></td>
+										<td><label >询价人：</label></td>
+										<td><input type="text" class="form-control" name="inquirer" id="inquirer"  data-required="true" data-type="number" ></td>
+									</tr>
+									<tr>
+										<td><label >报价币种：</label></td>
+										<td><select  class="input-sm form-control inline" name="qoCurrency" id="qoCurrency">
+		      									<option value="S/B">USD</option>
+		     									<option value="D/B">RMB</option>
+		      									</select></td>
+										<td><label >贸易形式</label></td>
+										<td><select  class="input-sm form-control inline" name="tradeForm" id="tradeForm" >
+		      									<option value="S/B">FOB</option>
+		     									<option value="D/B">FCA</option>
+		      									</select></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+						<div >
+						<a style="width:80px;height:30px;float:right;margin-right:35px"  href="javascript:saveSharePrice();" class="btn btn-default btn-sm">确定</a>
+				     	</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+			
+		<!--回签 -->
+	<div class="modal fade" id="signBack">
+		<div class="modal-dialog" style="width: 600px">
+			<div class="modal-content">	
+				<div class="modal-body">
+					<div class="row">
+					<div style="width:60%;height:50px;">
+					<label style="font-size:20px; margin-left:40px;">客户回签文件：</label>
+					<a style="width:100px;height:30px;float:right;"  href="javascript:void(0);" class="btn btn-default btn-sm"><span style="font-size:15px;">上传合同</span></a>
+					</div>
+					<div style = "margin-left:40px;margin-right:40px;">
+					<section class="panel panel-default" >
+					<header class="panel-heading">备注：</header>
+           			<div>
+           			<textarea name="a" style="width:485px;height:80px;"></textarea>
+           			</div>
+           			<div style=" margin-top: 20px; float: right">
+            	<a class="btn btn-s-md btn-primary-W" style="width:60px" href="javaScript:void(0);" onclick="updateSignBack();">提交</a>
+               </div>
+              		</section>	
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

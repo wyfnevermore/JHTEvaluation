@@ -1,0 +1,2 @@
+spect_id,saturn_id,serial_no,wave,absorb,system_temp,detector_temp,humidity,lamp_pd,scan_type,start_wave,end_wave,pixel_width,exposure_time,num_points,num_repeats,num_average,pga_gain,models,results,create_time
+321,34,113,1Q12,333£¬33,44£¬8,,,,,,qq,6,,,6,,6,,7,

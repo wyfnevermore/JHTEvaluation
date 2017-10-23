@@ -1,0 +1,31 @@
+package com.chinaias.webservice.erp;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.chinaias.entity.po.ERP_PO_PACKAGE;
+import com.chinaias.entity.so.ERP_PROJECT_PACKAGE;
+import com.chinaias.entity.so.ERP_SO_PACKAGE;
+import com.chinaias.entity.pc.ERP_JOB_PACKAGE;
+@XmlRootElement(name="P_REQUEST_DATA")
+@XmlSeeAlso({
+	ERP_PO_PACKAGE.class,
+	ERP_PROJECT_PACKAGE.class,
+	ERP_JOB_PACKAGE.class,
+	ERP_SO_PACKAGE.class
+	
+})
+public class P_REQUEST_DATA {
+	private Object pARAMETER;
+
+	@XmlElement(name="PARAMETER")
+	public Object getpARAMETER() {
+		return pARAMETER;
+	}
+
+	public void setpARAMETER(Object pARAMETER) {
+		this.pARAMETER = pARAMETER;
+	}
+	
+}

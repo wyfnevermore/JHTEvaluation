@@ -1,0 +1,5 @@
+[
+    {"productSKU": "101001", "productName": "空调被","spec":"D/B","quotedPrice":"11.5"},
+	{"productSKU": "101002", "productName": "枕头","spec":"S/B","quotedPrice":"6.5"},
+	{"productSKU": "101003", "productName": "靠垫","spec":"Q/B","quotedPrice":"5.5"}
+]

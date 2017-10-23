@@ -1,0 +1,282 @@
+//var path = "<%=path%>";
+
+(function ($) {
+	$.getUrlParam = function (name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return unescape(r[2]); return null;
+	}
+})(jQuery);
+  //添加采购
+
+  $(document).ready(function(){
+  	var hids = $.parseJSON($.getUrlParam("hids"));
+
+  	for (var i = 0; i < hids.length; i++) {
+  		
+  		var url = "/JHTEvaluation/getPurchaseOrderByHeaderId.do";
+  		$.post(url , {"headerId":hids[i]} , function (json){
+  			console.log(json);
+  			layoutPurchaseOrder($.parseJSON(json));
+  		});
+  	}
+
+  });
+  var savePoHeader;
+  function layoutPurchaseOrder(poOrder){
+  	var poHeader = poOrder.poHeader;
+    savePoHeader = poOrder;
+    $tabTitle = $("<li></li>").addClass("active");
+    $tabTitle.append($("<a/>").text(poHeader.vendorName).attr("href","#"+poHeader.headerId).attr("data-toggle","tab"));
+    $("#tabUl").append($tabTitle);
+
+    //注入头信息
+    $orderBody = $("<div></div>").attr({"class":"tab-pane active", "id":poHeader.headerId});
+    $headerBody = $("<div></div>").append("<div class=\"m-b-md\"> <h4>采购订单头信息</h4></div>");
+    $headerBorder = $("<section></section>").attr({"style":"padding:10px;margin-top:10px","class":"panel panel-default"});
+    $headerContent = $("<table></table>");
+
+
+    $headerContentLine1 = $("<tr></tr>");
+    $headerContentLine1.append($("<td width=8%></td>").append($("<label></label>").text("业务实体:")));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<input/>").attr({"name":"orgCode","class":"form-control","value":poHeader.orgCode})));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<label></label>").text("PO版本：")));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<input/>").attr({"name":"documentNum","class":"form-control","value":poHeader.documentNum})));
+    $headerContentLine1.append($("<td width=8%></td>").append($("<label></label>").text("采购员名称:")));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<input/>").attr({"name":"agentName","class":"form-control","value":poHeader.agentName})));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<label></label>").text("供应商名称:")));
+    $headerContentLine1.append($("<td width=12%></td>").append($("<input/>").attr({"name":"vendorName","class":"form-control","value":poHeader.vendorName})));
+    $headerContent.append($headerContentLine1);
+
+    $headerContentLine2 = $("<tr></tr>");
+    $headerContentLine2.append($("<td></td>").append($("<label></label>").text("供应商联系人:")));
+    $headerContentLine2.append($("<td></td>").append($("<input/>").attr({"name":"vendorContact","class":"form-control","value":poHeader.vendorContact})));
+    $headerContentLine2.append($("<td></td>").append($("<label></label>").text("币种:")));
+    $headerContentLine2.append($("<td></td>").append($("<input/>").attr({"name":"currencyCode","class":"form-control","value":poHeader.currencyCode})));
+    $headerContentLine2.append($("<td></td>").append($("<label></label>").text("摘要:")));
+    $headerContentLine2.append($("<td></td>").append($("<input/>").attr({"name":"comments","class":"form-control","value":poHeader.comments})));
+    $headerContentLine2.append($("<td></td>").append($("<label></label>").text("说明弹性域3:")));
+    $headerContentLine2.append($("<td></td>").append($("<input/>").attr({"name":"attribute3","class":"form-control","value":poHeader.attribute3})));
+    $headerContent.append($headerContentLine2);
+
+
+    $headerContentLine3 = $("<tr></tr>");
+    $headerContentLine3.append($("<td></td>").append($("<label></label>").text("说明弹性域4:")));
+    $headerContentLine3.append($("<td></td>").append($("<input/>").attr({"name":"attribute4","class":"form-control","value":poHeader.attribute4})));
+    $headerContentLine3.append($("<td></td>").append($("<label></label>").text("说明弹性域5:")));
+    $headerContentLine3.append($("<td></td>").append($("<input/>").attr({"name":"attribute5","class":"form-control","value":poHeader.attribute5})));
+    $headerContentLine3.append($("<td></td>").append($("<label></label>").text("说明弹性域6:")));
+    $headerContentLine3.append($("<td></td>").append($("<input/>").attr({"name":"attribute6","class":"form-control","value":poHeader.attribute6})));
+    $headerContentLine3.append($("<td></td>").append($("<label></label>").text("说明弹性域13:")));
+    $headerContentLine3.append($("<td></td>").append($("<input/>").attr({"name":"attribute13","class":"form-control","value":poHeader.attribute13})));
+    $headerContent.append($headerContentLine3);
+    
+    $headerBorder.append($headerContent);
+    $headerBody.append($headerBorder);
+
+    $orderBody.append($headerBody);
+
+
+
+    //注入行信息
+    $lineBody = $("<div></div>").append("<div class=\"m-b-md\"> <h4>采购订单行信息</h4></div>");
+    $lineBorder = $("<section></section>").attr({"style":"padding:10px;margin-top:10px","class":"panel panel-default"});
+    $lineContent = $("<table></table>").addClass("table table-striped b-t b-light text-sm");
+    $lineContentHeader = $("<thead></thead>");
+    $lineContentHeaderLine = $("<tr></tr>");
+
+    $lineContentHeaderLine.append("<th>物料编码</th>");
+    $lineContentHeaderLine.append("<th>单位</th>");
+    $lineContentHeaderLine.append("<th>数量</th>");
+    $lineContentHeaderLine.append("<th>单价</th>");
+    $lineContentHeaderLine.append("<th>行类型</th>");
+    $lineContentHeaderLine.append("<th>税率</th>");
+    $lineContentHeaderLine.append("<th>含税价格</th>");
+    $lineContentHeaderLine.append("<th>项目</th>");
+    $lineContentHeaderLine.append("<th>操作</th>").attr("style","width:80px");
+
+    $lineContentHeader.append($lineContentHeaderLine);
+    $lineContent.append($lineContentHeader);
+
+    $lineContentLineBody = $("<tbody></tbody>").attr("id","purchaseTbody");
+    /*
+    $lineContentLineContentLine1 = $("<tr></tr>");
+    $lineContentLineContentLine1.append("<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>");
+    $lineContentLineContentLine1.append("<td><a href=\"javaScript:addPurchase();\" ><i class=\"fa fa-plus\"></i></a>&nbsp;<a onClick=\"delRow(this)\" href=\"javaScript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;<div  class=\"btn-group\"> <a  href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td>");
+    
+    $lineContentLineBody.append($lineContentLineContentLine1);
+    */
+    for (var i = 0; i < poOrder.poLineList.length; i++) {
+      var poLine = poOrder.poLineList[i];
+      $lineContentLineContentLine = $("<tr></tr>").attr("id","lineContentLineContentLine"+i);
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.itemNumber).attr("name","itemNumber"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.unitOfMeasure).attr("name","unitOfMeasure"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.quantity).attr("name","quantity"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.unitPrice).attr("name","unitPrice"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.lineType).attr("name","lineType"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.lineAttribute1).attr("name","lineAttribute1"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.lineAttribute3).attr("name","lineAttribute3"));
+      $lineContentLineContentLine.append($("<td></td>").text(poLine.lineAttribute4).attr("name","lineAttribute4"));
+      $lineContentLineContentLine.append("<td><a href=\"javaScript:addPurchase();\" ><i class=\"fa fa-plus\"></i></a>&nbsp;<a href=\"javaScript:delRow(this);\"><i class=\"fa fa-minus\"></i></a>&nbsp;<div  class=\"btn-group\"> <a  href=\"javascript:addPurchase("+i+",this);\"><i class=\"fa fa-pencil\"></i></a></div></td>");
+
+      $lineContentLineBody.append($lineContentLineContentLine);
+    }
+
+    $lineContent.append($lineContentLineBody);
+    $lineBorder.append($lineContent);
+    $lineBody.append($lineBorder);
+    $("#tabDivs").append($orderBody);
+    $("#tabDivs").append($lineBody);
+  }
+
+  function addPurchase(lineNum,obj){
+
+
+  	addOrUpdate = "add"; 
+    if(lineNum>=0){
+      addOrUpdate = "update"; 
+      tr = lineNum;
+      var poLine = savePoHeader.poLineList[lineNum];
+      console.log(poLine);
+      $("#addPurchase input[name=itemNumber]").val(poLine.itemNumber);
+      $("#addPurchase input[name=unitOfMeasure]").val(poLine.unitOfMeasure);
+      $("#addPurchase input[name=quantity]").val(poLine.quantity);
+      $("#addPurchase input[name=unitPrice]").val(poLine.unitPrice);
+      $("#addPurchase input[name=lineType]").val(poLine.lineType);
+      $("#addPurchase input[name=lineAttribute1]").val(poLine.lineAttribute1);
+      $("#addPurchase input[name=lineAttribute3]").val(poLine.lineAttribute3); 
+      $("#addPurchase input[name=lineAttribute4]").val(poLine.lineAttribute4);
+    }
+    $("#addPurchase").modal('show');
+  }
+
+  function delRow(obj){
+  	if($(obj).parents("tbody").children().length>1){
+  		var res = confirm('确认要删除吗？');  
+  		if(res == true){
+        var lineNum =   $(obj).parents("tr").attr("id").substring("lineContentLineContentLine".length);
+        console.log(lineNum);
+        savePoHeader.poLineList[lineNum] = null;
+  			$(obj).parents("tr").remove(); 
+  		}
+  	}	
+  }
+
+
+ //点击编辑的小按钮
+ function getPurchase(obj) {
+ 	addOrUpdate = "update";
+ 	//获取选中的行
+ 	tr = $(obj).closest("tr");
+ 	$("#addPurchase").modal("show");
+ 	//获取列值，赋值给弹出框
+ 	$("#materielNum").val(tr.find("td:eq(0)").html());
+ 	$("#department").val(tr.find("td:eq(1)").html());
+ 	$("#materielNumer").val(tr.find("td:eq(2)").html());
+ 	$("#unitPrice").val(tr.find("td:eq(3)").html());
+ 	$("#rowType").val(tr.find("td:eq(4)").html());
+ 	$("#ratio").val(tr.find("td:eq(5)").html());
+ 	$("#ratioPrice").val(tr.find("td:eq(6)").html());
+ 	$("#project").val(tr.find("td:eq(7)").html());
+ }
+
+ 
+//点击添加或编辑里的确定按钮
+function updatePurchase(){
+	//$("#purchaseForm").submit();
+	var mixf = $("#purchaseForm input").hasClass('parsley-error');
+	if(mixf){
+    console.log(1);
+    return;
+  }
+  $("#addPurchase").modal("hide");
+  $(".modal-backdrop").remove();
+  $("body").removeClass('modal-open');
+  if(addOrUpdate == "add"){
+    console.log(2);
+
+    var html = "<tr id=lineContentLineContentLine"+savePoHeader.poLineList.length+"><td>" +$("#materielNum").val()
+    + "</td><td>" +$("#department").val()
+    + "</td><td>" +$("#materielNumer").val()
+    + "</td><td>" + $("#unitPrice").val() + "</td><td>" +$("#rowType").val()
+    + "</td><td>" +$("#ratio").val()+ "</td><td>" +$("#ratioPrice").val()+ "</td><td>" +$("#project").val()+"</td><td><div class=\"btn-group\"><a onclick=\"addPurchase()\" href=\"javascript:void(0);\"><i class=\"fa fa-plus\"></i></a></div>&nbsp;&nbsp;<a onClick=\"delRow(this)\" href=\"javascript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;&nbsp;<div class=\"btn-group\"><a onClick=\"getPurchase(this)\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a></div></td></tr>";
+ 		//通过表体id把显示文本显示到网页中
+    var poLine = {};
+    poLine['unitOfMeasure'] = $("#addPurchase input[name=unitOfMeasure]").val();
+    poLine['quantity'] = $("#addPurchase input[name=quantity]").val();
+    poLine['unitPrice'] = $("#addPurchase input[name=unitPrice]").val();
+    poLine['lineType'] = $("#addPurchase input[name=lineType]").val();
+    poLine['lineAttribute1'] = $("#addPurchase input[name=lineAttribute1]").val();
+    poLine['lineAttribute3'] = $("#addPurchase input[name=lineAttribute3]").val();
+    poLine['lineAttribute4'] = $("#addPurchase input[name=lineAttribute4]").val();
+    poLine['itemNumber'] = $("#addPurchase input[name=itemNumber]").val();
+    savePoHeader.poLineList.push(poLine);
+
+    $("#purchaseTbody").append(html);
+  }else if(addOrUpdate == "update"){
+    console.log(3);
+    savePoHeader.poLineList[tr]["unitOfMeasure"] = $("#addPurchase input[name=unitOfMeasure]").val();
+    savePoHeader.poLineList[tr]["quantity"] = $("#addPurchase input[name=quantity]").val();
+    savePoHeader.poLineList[tr]["unitPrice"] = $("#addPurchase input[name=unitPrice]").val();
+    savePoHeader.poLineList[tr]["lineType"] = $("#addPurchase input[name=lineType]").val();
+    savePoHeader.poLineList[tr]["lineAttribute1"] = $("#addPurchase input[name=lineAttribute1]").val();
+    savePoHeader.poLineList[tr]["lineAttribute3"] = $("#addPurchase input[name=lineAttribute3]").val();
+    savePoHeader.poLineList[tr]["lineAttribute4"] = $("#addPurchase input[name=lineAttribute4]").val();
+    savePoHeader.poLineList[tr]["itemNumber"] = $("#addPurchase input[name=itemNumber]").val();
+    tr = $("#lineContentLineContentLine"+tr);
+    tr.find("td:eq(0)").text($("#materielNum").val()); 
+    tr.find("td:eq(1)").text($("#department").val()) ; 
+    tr.find("td:eq(2)").text($("#materielNumer").val()) ; 
+    tr.find("td:eq(3)").text($("#unitPrice").val()) ; 
+    tr.find("td:eq(4)").text($("#rowType").val()) ; 
+    tr.find("td:eq(5)").text($("#ratio").val()) ; 
+    tr.find("td:eq(6)").text($("#ratioPrice").val()) ; 
+    tr.find("td:eq(7)").text($("#project").val()); 
+  }
+}
+
+
+//保存订单
+function saveOrder(){
+  savePoHeader.poHeader.orgCode = $("input[name=orgCode]").val();
+  savePoHeader.poHeader.documentNum = $("input[name=documentNum]").val();
+  savePoHeader.poHeader.agentName = $("input[name=agentName]").val();
+  savePoHeader.poHeader.vendorName = $("input[name=vendorName]").val();
+  savePoHeader.poHeader.vendorContact = $("input[name=vendorContact]").val();
+  savePoHeader.poHeader.currencyCode = $("input[name=currencyCode]").val();
+  savePoHeader.poHeader.comments = $("input[name=comments]").val();
+  savePoHeader.poHeader.attribute3 = $("input[name=attribute3]").val();
+  savePoHeader.poHeader.attribute4 = $("input[name=attribute4]").val();
+  savePoHeader.poHeader.attribute5 = $("input[name=attribute5]").val();
+  savePoHeader.poHeader.attribute6 = $("input[name=attribute6]").val();
+  savePoHeader.poHeader.attribute13 = $("input[name=attribute13]").val();
+  var url = "/JHTEvaluation/savePoOrder.do";
+  console.log( JSON.stringify(savePoHeader) );
+  $.post(url , {"json":JSON.stringify(savePoHeader)} ,function(json){
+    console.log("保存返回："+json);
+    savePoHeader = $.parseJSON(json);
+    alert("保存成功！");
+    
+  });
+
+
+}
+
+//上传订单与其他系统对接上传
+function uploadOrder(){
+  var url = "/JHTEvaluation/sendPurchaseOrderByHeaderId.do";
+  $.post(url , {"headerId":savePoHeader.poHeader.headerId} , function (json){
+    console.log(json);
+    json = $.parseJSON(json);
+    if(json.XRETURNCODE.value == "S"){
+      alert("上传成功！");
+    }else{
+      alert("上传失败："+json.XRESPONSEDATA.value);
+    }
+    //{"XRESPONSEDATA":{"declaredType":"java.lang.String","globalScope":false,"name":{"localPart":"X_RESPONSE_DATA","namespaceURI":"http://xmlns.oracle.com/apps/cux/soaprovider/plsql/cux_ws_server_factory_pkg/invokefmsws/","prefix":""},"nil":false,"scope":"com.chinaias.webservice.erp.OutputParameters","typeSubstituted":false,"value":"\n<G_PO_HEADERS>\n<PO_HEADER>\n<IMPORT_ID>1<\/IMPORT_ID>\n<PO_HEADER_ID>113<\/PO_HEADER_ID>\n<IMPORT_STATUS>S<\/IMPORT_STATUS>\n<IMPORT_MESSAGE>CUX_WS_PO_IMPORT_ONE_SUCCESS<\/IMPORT_MESSAGE>\n<G_PO_LINES>\n<PO_LINE>\n<LINE_NUM>1<\/LINE_NUM>\n<PO_LINE_ID>141<\/PO_LINE_ID>\n<G_PO_LINE_LOCATIONS>\n<PO_LINE_LOCATION>\n<SHIPMENT_NUM>1<\/SHIPMENT_NUM>\n<LINE_LOCATION_ID>141<\/LINE_LOCATION_ID>\n<G_PO_DISTRIBUTIONS>\n<PO_DISTRIBUTION>\n<DISTRIBUTION_NUM>1<\/DISTRIBUTION_NUM>\n<PO_DISTRIBUTION_ID>128<\/PO_DISTRIBUTION_ID>\n<\/PO_DISTRIBUTION>\n<\/G_PO_DISTRIBUTIONS>\n<\/PO_LINE_LOCATION>\n<\/G_PO_LINE_LOCATIONS>\n<\/PO_LINE>\n<\/G_PO_LINES>\n<\/PO_HEADER>\n<\/G_PO_HEADERS>\n"},"XRETURNCODE":{"declaredType":"java.lang.String","globalScope":false,"name":{"localPart":"X_RETURN_CODE","namespaceURI":"http://xmlns.oracle.com/apps/cux/soaprovider/plsql/cux_ws_server_factory_pkg/invokefmsws/","prefix":""},"nil":false,"scope":"com.chinaias.webservice.erp.OutputParameters","typeSubstituted":false,"value":"S"},"XRETURNMESG":{"declaredType":"java.lang.String","globalScope":false,"name":{"localPart":"X_RETURN_MESG","namespaceURI":"http://xmlns.oracle.com/apps/cux/soaprovider/plsql/cux_ws_server_factory_pkg/invokefmsws/","prefix":""},"nil":false,"scope":"com.chinaias.webservice.erp.OutputParameters","typeSubstituted":false,"value":"采购订单导入成功！"}}
+    
+  });
+}
+
+
+

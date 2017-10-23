@@ -1,0 +1,291 @@
+package com.chinaias.controller.salesOrder;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSON;
+import com.chinaias.entity.po.ERP_PO_PACKAGE;
+import com.chinaias.entity.so.ERP_PROJECT_PACKAGE;
+import com.chinaias.entity.so.ERP_SO_PACKAGE;
+import com.chinaias.entity.so.G_PROJECT_INFO;
+import com.chinaias.entity.so.SoCommissions;
+import com.chinaias.entity.so.SoHeader;
+import com.chinaias.entity.so.SoLine;
+import com.chinaias.entity.so.SoOrder;
+import com.chinaias.entity.so.SoProject;
+import com.chinaias.service.IBaseService;
+import com.chinaias.service.ISalesOrderService;
+import com.chinaias.webservice.erp.OutputParameters;
+import com.chinaias.webservice.erp.P_REQUEST_DATA;
+import com.chinaias.webservice.erp.RequestERP;
+
+import net.sf.json.JSONObject;
+
+@Controller
+@Scope("prototype") 
+public class SalesOrderController {
+
+	@Resource
+	private IBaseService<SoHeader> baseService;
+	@Resource
+	private IBaseService<SoLine> baseServiceSL;
+	@Resource
+	private IBaseService<SoCommissions> baseServiceSC;
+	@Resource
+	private IBaseService<SoProject> baseServiceSP;
+	@Resource
+	private ISalesOrderService salesOrderService;
+
+	//public static String allUseHeaderId = "";
+
+	@RequestMapping("/salesOrder.do")
+	public ModelAndView Dictionary() throws Exception { 
+		ModelAndView mav = new ModelAndView(); 
+		mav.setViewName("salesOrder");
+		return mav;
+	}
+
+	//查询销售订单头
+	@RequestMapping(value="/querySoHeader.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String querySoHeader(String headerId) {
+		SoHeader soHeader = this.baseService.findById(SoHeader.class, headerId);
+		JSONObject soHeaderJson = JSONObject.fromObject(soHeader); 
+		return  soHeaderJson.toString(); 
+	}
+
+
+	//查询销售订单行
+	@RequestMapping(value="/querySoLine.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String querySoLine(String headerId) {
+		List<SoLine> soLine = this.baseServiceSL.findByProperty(SoLine.class, "headerId", headerId);
+		//list转json
+		String soLineJson=JSON.toJSON(soLine).toString();
+		return  soLineJson.toString(); 
+	}
+
+	//查询佣金行
+	@RequestMapping(value="/querySoCommission.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String querySoCommission(String headerId) {
+		List<SoCommissions> soCommissions = this.baseServiceSC.findByProperty(SoCommissions.class, "headerId", headerId);
+		//list转json
+		String soLineJson=JSON.toJSON(soCommissions).toString();
+		return  soLineJson.toString(); 
+	}
+
+	//通过id查询佣金行
+	@RequestMapping(value="/querySoComById.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String querySoComById(String soComissionsId) {
+		SoCommissions soCommission = this.baseServiceSC.findById(SoCommissions.class, soComissionsId);
+		JSONObject jsonObject = JSONObject.fromObject(soCommission);
+		return  jsonObject.toString(); 
+	}
+	
+	//显示销售订单行
+		@RequestMapping(value="/queryProject.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+		public @ResponseBody String queryProject(String projectId) {
+			SoProject soProject = this.baseServiceSP.findById(SoProject.class,projectId);
+			JSONObject jsonObject = JSONObject.fromObject(soProject);
+			return  jsonObject.toString(); 
+		}
+	
+
+
+	//保存销售订单头
+	@RequestMapping(value="/saveSoHeader.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String saveSoHeader(@RequestBody SoHeader soHeader) {
+		sendProjectById("");
+		
+		
+		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");  
+		//allUseHeaderId = uuid;
+		soHeader.setHeaderId(uuid);
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		soHeader.setOrderNumber(df.format(new Date()));
+		soHeader.setPo_Status(1);
+		soHeader.setJo_Status(1);
+		soHeader.setSo_Status(1);
+		soHeader.setOrderDate(df1.format(new Date()));
+		this.baseService.save(soHeader);
+		return  "保存成功!"; 
+	}
+
+
+	//保存销售订单行
+	@RequestMapping(value="/saveSoLine.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String saveSoLine(@RequestBody SoLine soLine) {
+		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");  
+		soLine.setLineId(uuid);
+		this.baseServiceSL.save(soLine);
+		return  "新增成功！"; 
+	}
+
+	//保存项目行
+		@RequestMapping(value="/saveProject.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+		public @ResponseBody String saveProject(@RequestBody SoProject soProject) {
+			String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");  
+			soProject.setProjectId(uuid);
+			this.baseServiceSP.save(soProject);
+			return  "新增成功！"; 
+		}
+		
+	//初始保存销售订单行
+	@RequestMapping(value="/saveInitSoLine.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String saveInitSoLine(@RequestBody SoLine soLine,String headerId) {
+		soLine.setHeaderId(headerId);
+		this.baseServiceSL.save(soLine);
+		return  ""; 
+	}
+
+	//初始保存销售订单行
+	@RequestMapping(value="/saveInitSoCom.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String saveInitSoCom(@RequestBody SoCommissions soCom,String headerId) {
+		soCom.setHeaderId(headerId);
+		this.baseServiceSC.save(soCom);
+		return  ""; 
+	}
+
+	//更新销售订单行
+	@RequestMapping(value="/updateSoLine.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String updateSoLine( SoLine soLine,String soLineId) {
+		System.out.println(soLineId);
+		SoLine newSoLine = this.baseServiceSL.findById(SoLine.class, soLineId);
+		System.out.println(newSoLine.getLineId());
+		newSoLine.setBrandTerminal(soLine.getBrandTerminal());
+		newSoLine.setCalculatePrice(soLine.getCalculatePrice());
+		newSoLine.setCostRate(soLine.getCostRate());
+		newSoLine.setCustomerTerminal(soLine.getCustomerTerminal());
+		newSoLine.setCustPoNumber(soLine.getCustPoNumber());
+		newSoLine.setItemNumber(soLine.getItemNumber());
+		newSoLine.setItemUom(soLine.getItemUom());
+		newSoLine.setHeaderId(soLine.getHeaderId());
+		newSoLine.setEnProductName(soLine.getEnProductName());
+		newSoLine.setRequestDate(soLine.getRequestDate());
+		newSoLine.setInternalPrice(soLine.getInternalPrice());
+		newSoLine.setOrderNumber(soLine.getOrderNumber());
+		this.baseServiceSL.update(newSoLine);
+		return  "更新成功！"; 
+	}
+
+
+
+	//保存佣金行
+	@RequestMapping(value="/saveSoCommission.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String saveSoCommission( SoCommissions soCommissions,String headerId) {
+		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");  
+		soCommissions.setCommissionsId(uuid);
+		soCommissions.setHeaderId(headerId);
+		this.baseServiceSC.save(soCommissions);
+		return  "3"; 
+	}
+
+
+
+	//更新佣金行
+	@RequestMapping(value="/updateSoCommission.do",method=RequestMethod.POST,produces="application/json;charset=utf-8")  
+	public @ResponseBody String updateSoCommission(@RequestBody List<SoCommissions> soCommissionsList,String headerId) {
+		for(int i=0;i<soCommissionsList.size();i++){
+			soCommissionsList.get(i).setHeaderId(headerId);
+			SoCommissions soCommissions	= this.baseServiceSC.findById(SoCommissions.class, soCommissionsList.get(i).getCommissionsId());
+			soCommissions.setCommissionLineNum(soCommissionsList.get(i).getCommissionLineNum());
+			soCommissions.setOrgName(soCommissionsList.get(i).getOrgName());
+			soCommissions.setSourceDocType(soCommissionsList.get(i).getSourceDocType());
+			soCommissions.setCommissionRate(soCommissionsList.get(i).getCommissionRate());
+			soCommissions.setCommissionTypeName(soCommissionsList.get(i).getCommissionTypeName());
+			soCommissions.setVendorName(soCommissionsList.get(i).getVendorName());
+			soCommissions.setCommissionPrice(soCommissionsList.get(i).getCommissionPrice());
+			soCommissions.setLineNum(soCommissionsList.get(i).getLineNum());
+			this.baseServiceSC.update(soCommissionsList.get(i));
+		}
+		return  ""; 
+	}
+
+
+	@RequestMapping(value="/sendSalesOrderByHeaderId.do",method=RequestMethod.POST,produces="application/text;charset=utf-8")  
+	public @ResponseBody String sendSalesOrderByHeaderId(SoHeader soHeader) {
+		
+	
+		
+		SoOrder soOrder = salesOrderService.getSoOrderByHeaderId(soHeader.getHeaderId());
+		P_REQUEST_DATA p_REQUEST_DATA = new P_REQUEST_DATA();
+		ERP_SO_PACKAGE eRP_SO_PACKAGE = new ERP_SO_PACKAGE();
+		SoOrder g_OE_ORDER_INFO = new SoOrder();
+		SoHeader solesHeader = soOrder.getSoHeader();
+		List<SoLine> solesLines = soOrder.getSoLineList();
+		List<SoCommissions> solesCommissions = soOrder.getSoCommissionsList();
+		solesHeader.setHeaderId(null);
+		solesHeader.setSo_Status(null);
+		solesHeader.setPo_Status(null);
+		solesHeader.setJo_Status(null);
+		for(int i=0;i<solesLines.size();i++) {
+			solesLines.get(i).setEvaluationOrderNumber(null);
+			solesLines.get(i).setProductName(null);
+			solesLines.get(i).setMaterialDes(null);
+			solesLines.get(i).setSpecification(null);
+			solesLines.get(i).setUnitPrice(null);
+			solesLines.get(i).setRemark(null);
+			solesLines.get(i).setEvaluationLineId(null);
+			solesLines.get(i).setHeaderId(null);
+			solesLines.get(i).setProjectNumber(null);
+			solesLines.get(i).setProductSKU(null);
+			solesLines.get(i).setCurrencyCode(null);
+			solesLines.get(i).setOrderNumber(null);
+			solesLines.get(i).setSupplier(null);
+			solesLines.get(i).setOrgCode(null);
+			solesLines.get(i).setDeliveryDate(null);
+		}
+		for(int i=0;i<solesCommissions.size();i++) {
+			solesCommissions.get(i).setHeaderId(null);
+		}
+		g_OE_ORDER_INFO.setSoHeader(soOrder.getSoHeader());
+		g_OE_ORDER_INFO.setSoLineList(soOrder.getSoLineList());
+		g_OE_ORDER_INFO.setSoCommissionsList(soOrder.getSoCommissionsList());
+		eRP_SO_PACKAGE.setSoOrder(g_OE_ORDER_INFO);
+		p_REQUEST_DATA.setpARAMETER(eRP_SO_PACKAGE);
+		OutputParameters op = RequestERP.Request("OE_ORDER_IMPORT", p_REQUEST_DATA);
+		JSONObject jsonArr = JSONObject.fromObject(op);
+		
+		
+		sendProjectById(solesHeader.getProjectId());
+		
+		return jsonArr.toString();
+	}
+	
+	//project
+	public  String sendProjectById(String id) {
+		id="2018";
+		SoProject soProject = baseServiceSP.findById(SoProject.class,id);
+		soProject.setImportId(soProject.getProjectId());
+		soProject.setSourceCode("OA_PROJECT");
+		soProject.setSourceHeaderId("1");
+		soProject.setSourceLineId(null);
+		soProject.setProjectId(null);
+		P_REQUEST_DATA p_REQUEST_DATA = new P_REQUEST_DATA();
+		ERP_PROJECT_PACKAGE eRP_PROJECT_PACKAGE = new ERP_PROJECT_PACKAGE();
+		G_PROJECT_INFO g_PROJECT_INFO = new G_PROJECT_INFO();
+		
+		
+		g_PROJECT_INFO.setSoProject(soProject);
+		eRP_PROJECT_PACKAGE.setG_PROJECT_INFO(g_PROJECT_INFO);
+		p_REQUEST_DATA.setpARAMETER(eRP_PROJECT_PACKAGE);
+		OutputParameters op = RequestERP.Request("PROJECT_IMPORT", p_REQUEST_DATA);
+		JSONObject jsonArr = JSONObject.fromObject(op);
+		return jsonArr.toString();
+		
+	}
+	
+	
+
+}

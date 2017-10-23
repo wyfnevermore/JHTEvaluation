@@ -1,0 +1,11 @@
+[
+ 
+	{"sku": "MI","name":"米"},
+	{"sku": "KE","name":"克"},
+	{"sku": "G","name":"克"},
+	{"sku": "ZHANG","name":"杖"},
+	{"sku": "CUN","name":"寸"},
+	{"sku": "CHI","name":"尺"},
+	{"sku": "CM","name":"厘米"},
+	{"sku": "M","name":"米"}
+]

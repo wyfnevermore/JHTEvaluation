@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-schema="BMH" match-name="MODULE"/>
+  <table-filter match-schema="BMH" match-name="PRODUCT"/>
+    <table-filter match-schema="BMH" match-name="SATURN"/>
+  <!--     <table-filter match-schema="BMH" match-name="CLIENT"/>
+        <table-filter match-schema="BMH" match-name="GOODS"/>
+      <table-filter match-schema="BMH" match-name="PRODUCT"/>
+        <table-filter match-schema="BMH" match-name="SATURN"/>
+          <table-filter match-schema="BMH" match-name="SPECTRUM"/>
+            <table-filter match-schema="BMH" match-name="LOGGER"/>
+              <table-filter match-schema="BMH" match-name="VERSION"/>
+                <table-filter match-schema="BMH" match-name="MODEL"/>
+                  <table-filter match-schema="BMH" match-name="UPDATE_FILE"/>
+                    <table-filter match-schema="BMH" match-name="TASK"/> -->
+</hibernate-reverse-engineering>

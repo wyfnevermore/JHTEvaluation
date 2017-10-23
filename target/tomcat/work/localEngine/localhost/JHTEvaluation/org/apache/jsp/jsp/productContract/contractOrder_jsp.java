@@ -1,0 +1,367 @@
+package org.apache.jsp.jsp.productContract;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+
+public final class contractOrder_jsp extends org.apache.jasper.runtime.HttpJspBase
+    implements org.apache.jasper.runtime.JspSourceDependent {
+
+  private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
+
+  private static java.util.List _jspx_dependants;
+
+  private javax.el.ExpressionFactory _el_expressionfactory;
+  private org.apache.AnnotationProcessor _jsp_annotationprocessor;
+
+  public Object getDependants() {
+    return _jspx_dependants;
+  }
+
+  public void _jspInit() {
+    _el_expressionfactory = _jspxFactory.getJspApplicationContext(getServletConfig().getServletContext()).getExpressionFactory();
+    _jsp_annotationprocessor = (org.apache.AnnotationProcessor) getServletConfig().getServletContext().getAttribute(org.apache.AnnotationProcessor.class.getName());
+  }
+
+  public void _jspDestroy() {
+  }
+
+  public void _jspService(HttpServletRequest request, HttpServletResponse response)
+        throws java.io.IOException, ServletException {
+
+    PageContext pageContext = null;
+    HttpSession session = null;
+    ServletContext application = null;
+    ServletConfig config = null;
+    JspWriter out = null;
+    Object page = this;
+    JspWriter _jspx_out = null;
+    PageContext _jspx_page_context = null;
+
+
+    try {
+      response.setContentType("text/html; charset=UTF-8");
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+
+      out.write('\n');
+String path=request.getContextPath(); 
+
+      out.write("\n");
+      out.write("<!DOCTYPE html>\n");
+      out.write("<html lang=\"en\">\n");
+      out.write("<head>\n");
+      out.write("<title>Insert title here</title>\n");
+      out.write("<meta charset=\"utf-8\" />\n");
+      out.write("<title>JHT测算平台 | Web Application</title>\n");
+      out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+      out.print(path);
+      out.write("/css/slideshow.css\">\n");
+      out.write("<link rel=\"stylesheet\" href=\"");
+      out.print(path);
+      out.write("/css/app.v2.css\" type=\"text/css\" />\n");
+      out.write("<link rel='stylesheet' href=\"");
+      out.print(path);
+      out.write("/css/bootstrap-datetimepicker.min.css\" type='text/css'>\n");
+      out.write("<script src=\"");
+      out.print(path);
+      out.write("/Script/jquery.min.js\"></script>\n");
+      out.write("<script src=\"");
+      out.print(path);
+      out.write("/Script/app.v2.js\"></script>\n");
+      out.write("<script type=\"text/javascript\" src=\"");
+      out.print(path);
+      out.write("/Script/datepicker/bootstrap-datetimepicker.js\" charset=\"UTF-8\"></script>\n");
+      out.write("<script src=\"");
+      out.print(path);
+      out.write("/js/likeSearchInput.js\"></script>\n");
+      out.write("<script type=\"text/javascript\" src=\"");
+      out.print(path);
+      out.write("/Script/bootstrap.min.js\"></script>\n");
+      out.write("<script type=\"text/javascript\" src=\"");
+      out.print(path);
+      out.write("/Script/parsley/parsley.min.js\"></script>\n");
+      out.write("<script src=\"");
+      out.print(path);
+      out.write("/js/productContract/contractOrder.js\"></script>\n");
+      out.write("<script type=\"text/javascript\">\n");
+      out.write("\tvar path = \"");
+      out.print(path);
+      out.write("\";\n");
+      out.write("</script>\n");
+      out.write("</head>\n");
+      out.write("<body>\n");
+      out.write("  <div>\n");
+      out.write("    <section class=\"scrollable padder\">\n");
+      out.write("    <div class=\"m-b-md\">\n");
+      out.write("      <h3 class=\"m-b-none\">创建工单</h3>\n");
+      out.write("    </div>\n");
+      out.write("    <div id=\"calForm\" class=\"m-b-sm\">\n");
+      out.write("    <section style=\"width: 100%;\" class=\"panel panel-default\">\n");
+      out.write("    <form id=\"commonHead\" class=\"form-horizontal\"  data-validate=\"parsley\" method=\"post\" onsubmit=\"return false\">\n");
+      out.write("    <table style=\"margin:10px 10px 10px 10px;width: 98%\">\n");
+      out.write("\t\t<tbody>\n");
+      out.write("\t\t\t<tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">库存组织:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"4%\"><label style=\"float: left\">INV_WG</label></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">起始时间:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control\" id=\"orderTime\" value=\"2017-01-01\" style=\"float:left;width:150px\" class=\"form-control\" name=\"schduledStartDate\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">加工合同号:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"10%\"><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processContractNum\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">加工商:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"16%\"><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processName\" id=\"processName\" code=\"\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">订单类型:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"6%\">\n");
+      out.write("\t\t\t\t\t\n");
+      out.write("\t\t\t\t\t<select onchange=\"changeType(this)\" class=\"form-control\">\n");
+      out.write("\t\t\t\t\t\t<option value=\"自制\">自制</option><option value=\"外协\">外协</option>\n");
+      out.write("\t\t\t\t\t</select>\n");
+      out.write("\t\t\t\t\n");
+      out.write("\t\t\t\t</td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><a class=\"btn btn-s-md btn-primary-W\" style=\"width:60px;float: right\" href=\"javaScript:void(0);\" onclick=\"addTab();\">添加工单</a></td>\n");
+      out.write("\t\t\t</tr>\n");
+      out.write("\t\t</tbody>\n");
+      out.write("\t</table>\n");
+      out.write("\t</form>\n");
+      out.write("\t\t\t\n");
+      out.write("\t<header class=\"panel-heading\">\n");
+      out.write("\t\t<div class=\"panel-body\">\n");
+      out.write("\t\t\t<ul class=\"nav nav-tabs nav-justified\" id=\"addTabs\">\n");
+      out.write("\t\t\t\t<li class=\"active\"><a href=\"#order1\" data-toggle=\"tab\">工单</a></li>\n");
+      out.write("\t\t\t</ul>\n");
+      out.write("\t\t</div>\n");
+      out.write("\t</header>\n");
+      out.write("\t\t\t\n");
+      out.write("\t<div class=\"panel-body\">\n");
+      out.write("\t<form id=\"dataForm\" class=\"form-horizontal\"  data-validate=\"parsley\" method=\"post\" onsubmit=\"return false\">\n");
+      out.write("\t  <div class=\"tab-content\" id=\"tabDivs\">\n");
+      out.write("\t\t<div class=\"tab-pane active\" style=\"\" id=\"order1\">\n");
+      out.write("\t\t  <div class=\"m-b-md\"> <h4>工单头信息</h4></div>\n");
+      out.write("\t\t  <table style=\"width: 90%\">\n");
+      out.write("\t\t    <tbody>\n");
+      out.write("\t\t      <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">工单号:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"jobName\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">装配件:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"assemblyItem\" sku=\"\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">数量:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"startQuantity\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">项目:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"projectNumber\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t  <tr><td colspan=\"8\"><div class=\"line line-dashed line-lg pull-in\"></div></td></tr>\n");
+      out.write("\t\t\t  <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">材料费:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"materialFee\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">加工费:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processFee\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">网型:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"meshType\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">销售订单号:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"orderNumber\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t  <tr><td colspan=\"8\"><div class=\"line line-dashed line-lg pull-in\"></div></td></tr>\n");
+      out.write("\t\t\t  <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 单产品生产工时:</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"singleProductTime\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\">花型：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"flowerPattern\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 车间：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"workshop\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 加工产品类别：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processProductType\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t</tbody>\n");
+      out.write("\t\t  </table>\n");
+      out.write("\t\t  <section style=\"width: 90%;margin-top:10px\" class=\"panel panel-default\">\n");
+      out.write("\t\t\t<header><h4>工单行信息</h4></header>\n");
+      out.write("\t\t\t<div class=\"tab-pane active\">\n");
+      out.write("\t\t\t   <table class=\"table table-striped b-t b-light text-sm\">\n");
+      out.write("               <thead>\n");
+      out.write("                 <tr>\n");
+      out.write("                   <th>物料编码</th>\n");
+      out.write("                   <th>用量</th>\n");
+      out.write("                   <th>产出率</th>\n");
+      out.write("                   <th>物料成本</th>\n");
+      out.write("                   <th>工序</th>\n");
+      out.write("                   <th>类型(MDS/BOM)</th>\n");
+      out.write("                   <th style=\"width:85px;\">操作</th>\n");
+      out.write("                 </tr>\n");
+      out.write("               </thead>\n");
+      out.write("               <tbody id=\"processContractLines\">\n");
+      out.write("                 <tr>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td><a onClick=\"addContract(this);\" href=\"javaScript:void(0);\"><i class=\"fa fa-plus\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t<a onClick=\"delRow(this)\" href=\"javaScript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t<a onClick=\"getContract(this);\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t</td>\n");
+      out.write("                 </tr>\n");
+      out.write("               </tbody>\n");
+      out.write("             </table>\n");
+      out.write("             </div>\n");
+      out.write("             </section>\n");
+      out.write("\t\t  </div>\n");
+      out.write("\t\t</div>\n");
+      out.write("\t\t\n");
+      out.write("\t\t\n");
+      out.write("\t\t\t</form>\n");
+      out.write("             \n");
+      out.write("         </div>\n");
+      out.write("\t\t<div style=\"margin:10px 20px; float: right\">\n");
+      out.write("\t\t\t<a class=\"btn btn-s-md btn-primary-W\" style=\"width: 60px\" href=\"javaScript:void(0);\" onclick=\"saveContract();\">保存合同</a>&nbsp;&nbsp;\n");
+      out.write("\t\t\t<a class=\"btn btn-s-md btn-primary-W\" style=\"width: 60px\" href=\"javaScript:void(0);\" onclick=\"uploadContractAfterSave();\">上传工单</a>&nbsp;&nbsp;\n");
+      out.write("\t\t\t<a class=\"btn btn-s-md btn-primary-W\" style=\"width: 60px\" href=\"javaScript:void(0);\" onclick=\"uploadContractMDS();\">上传MDS</a>&nbsp;&nbsp;\n");
+      out.write("\t\t\t<a class=\"btn btn-s-md btn-primary-W\" style=\"width: 60px\" href=\"javaScript:void(0);\" onclick=\"uploadContractPOFee();\" id=\"POFeeBtn\" style=\"display: none;\">上传加工费</a>\n");
+      out.write("\t\t</div>\n");
+      out.write("\t  </section>\n");
+      out.write("      </div>\n");
+      out.write("     </section>\n");
+      out.write("    </div> \n");
+      out.write(" \n");
+      out.write(" \n");
+      out.write(" \n");
+      out.write(" \n");
+      out.write(" \n");
+      out.write("\t <!--添加修改合同行信息  -->\n");
+      out.write("\t <div class=\"modal fade\" id=\"addContract\">\n");
+      out.write("\t\t<div class=\"modal-dialog\" style=\"width: 800px\">\n");
+      out.write("\t\t\t<div class=\"modal-content\">\n");
+      out.write("\t\t\t\t<div class=\"modal-body\">\n");
+      out.write("\t\t\t\t\t<div class=\"row\">\n");
+      out.write("\t\t\t\t\t<form id=\"contractForm\" class=\"form-horizontal\"  data-validate=\"parsley\" method=\"post\" onsubmit=\"return false\">\n");
+      out.write("\t\t\t\t\t\t<table style=\"text-align: right;\"\n");
+      out.write("\t\t\t\t\t\t\tclass=\"table table-striped b-t b-light text-sm\">\n");
+      out.write("\t\t\t\t\t\t\t<tbody id=\"atbody\">\n");
+      out.write("\t\t\t\t\t\t\t\t<tr>\t\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>BOM–物料编码：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><input type=\"text\" id=\"bomMaterielNum\" sku=\"\" class=\"form-control\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>BOM–用量：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><input type=\"text\" id=\"bomDosage\" class=\"form-control\" data-type=\"number\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t\t\t\t\t</tr>\n");
+      out.write("\t\t\t\t\t\t\t\t<tr>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>BOM–产出率：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><input type=\"text\" id=\"bomOutputRate\"  class=\"form-control\" data-type=\"number\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>BOM-物料成本：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><input type=\"text\" id=\"materialCosts\" class=\"form-control\" data-type=\"number\"></td>\n");
+      out.write("\t\t\t\t\t\t\t\t</tr>\n");
+      out.write("\t\t\t\t\t\t\t\t<tr>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>工序：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><input type=\"text\" class=\"form-control\" id=\"procedure\"  style=\"float:left;\" class=\"form-control\"></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><label>类型(MDS/BOM)：</label></td>\n");
+      out.write("\t\t\t\t\t\t\t\t\t<td><select name=\"mdsOrbom\" id=\"mdsOrbom\" class=\"form-control\" >\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t<option value=\"BOM\">BOM</option>\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t<option value=\"MDS\">MDS</option>\n");
+      out.write("\t\t\t\t\t\t\t\t\t</select></td>\n");
+      out.write("\t\t\t\t\t\t\t\t</tr>\n");
+      out.write("\t\t\t\t\t\t\t</tbody>\n");
+      out.write("\t\t\t\t\t\t</table>\n");
+      out.write("\n");
+      out.write("\t\t\t\t\t\t<div>\n");
+      out.write("\t\t\t\t\t\t\t<a style=\"width: 80px; height: 30px; float: right; margin-right: 35px\" href=\"javascript:void(0);\" onClick=\"updateContract();\"  class=\"btn btn-default btn-sm\">确定</a>\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t</form>\n");
+      out.write("\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t</div>\n");
+      out.write("\t\t\t</div>\n");
+      out.write("\t\t</div>\n");
+      out.write("\t</div>\n");
+      out.write("\t\n");
+      out.write("\t\n");
+      out.write("\t\n");
+      out.write("\t<div style=\"display:none\">\n");
+      out.write("\t\t<div class=\"tab-pane active\" style=\"\" id=\"orderInit\">\n");
+      out.write("\t\t  <div class=\"m-b-md\"> <h4>工单头信息</h4></div>\n");
+      out.write("\t\t  <table style=\"width: 90%\">\n");
+      out.write("\t\t    <tbody>\n");
+      out.write("\t\t      <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">工单号:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"jobName\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">装配件:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"assemblyItem\" sku=\"\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">数量:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"startQuantity\" data-required=\"true\"></td>\n");
+      out.write("\t\t\t\t<td width=\"8%\"><label style=\"float: right\">项目:</label></td>\n");
+      out.write("\t\t\t\t<td width=\"12%\"><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"projectNumber\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t  <tr><td colspan=\"8\"><div class=\"line line-dashed line-lg pull-in\"></div></td></tr>\n");
+      out.write("\t\t\t  <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">材料费:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"materialFee\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">加工费:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processFee\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">网型:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"meshType\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: right\">销售订单号:</label></td>\n");
+      out.write("\t\t\t\t<td ><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"orderNumber\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t  <tr><td colspan=\"8\"><div class=\"line line-dashed line-lg pull-in\"></div></td></tr>\n");
+      out.write("\t\t\t  <tr height=\"30px\">\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 单产品生产工时:</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"singleProductTime\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\">花型：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"flowerPattern\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 车间：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"workshop\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: right\"> 加工产品类别：</label></td>\n");
+      out.write("\t\t\t\t<td><label style=\"float: left\"><input type=\"text\" class=\"form-control parsley-validated\" name=\"processProductType\" data-required=\"true\"></label></td>\n");
+      out.write("\t\t\t  </tr>\n");
+      out.write("\t\t\t</tbody>\n");
+      out.write("\t\t  </table>\n");
+      out.write("\t\t  <section style=\"width: 90%;margin-top:10px\" class=\"panel panel-default\">\n");
+      out.write("\t\t\t<header><h4>工单行信息</h4></header>\n");
+      out.write("\t\t\t<div class=\"tab-pane active\">\n");
+      out.write("\t\t\t   <table class=\"table table-striped b-t b-light text-sm\">\n");
+      out.write("               <thead>\n");
+      out.write("                 <tr>\n");
+      out.write("                   <th>物料编码</th>\n");
+      out.write("                   <th>用量</th>\n");
+      out.write("                   <th>产出率</th>\n");
+      out.write("                   <th>物料成本</th>\n");
+      out.write("                   <th>工序</th>\n");
+      out.write("                   <th>类型(MDS/BOM)</th>\n");
+      out.write("                   <th style=\"width:85px;\">操作</th>\n");
+      out.write("                 </tr>\n");
+      out.write("               </thead>\n");
+      out.write("               <tbody>\n");
+      out.write("                 <tr>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td></td>\n");
+      out.write("                   <td><a onClick=\"addContract(this);\" href=\"javaScript:void(0);\"><i class=\"fa fa-plus\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t<a onClick=\"delRow(this)\" href=\"javaScript:;\"><i class=\"fa fa-minus\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t<a onClick=\"getContract(this);\" href=\"javascript:void(0)\"><i class=\"fa fa-pencil\"></i></a>&nbsp;\n");
+      out.write("             \t\t\t</td>\n");
+      out.write("                 </tr>\n");
+      out.write("               </tbody>\n");
+      out.write("             </table>\n");
+      out.write("             </div>\n");
+      out.write("             </section>\n");
+      out.write("\t\t  </div>\n");
+      out.write("\t\n");
+      out.write("\t</div>\n");
+      out.write("</body>\n");
+      out.write("</html>");
+    } catch (Throwable t) {
+      if (!(t instanceof SkipPageException)){
+        out = _jspx_out;
+        if (out != null && out.getBufferSize() != 0)
+          try { out.clearBuffer(); } catch (java.io.IOException e) {}
+        if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+      }
+    } finally {
+      _jspxFactory.releasePageContext(_jspx_page_context);
+    }
+  }
+}

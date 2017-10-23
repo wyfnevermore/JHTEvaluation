@@ -1,0 +1,119 @@
+package com.chinaias.entity.pc;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Entity
+@Table(name = "PC_COMP_INFO", schema = "jhteval")
+@XmlRootElement(name="COMP_INFO")
+public class PcCompInfo {
+   private String compInfoId;
+   /** BOM – 物料编码*/
+   private String componentItem;
+   /** BOM – 用量*/
+   private int quantityPerAssmbly;
+   /** BOM – 产出率*/
+   private float componentYieldFactor;
+   /** MATERIAL_COSTS*/
+   private float materialCosts;
+   /** 关联字段，生产加工合同号*/
+   private String processContractNum;
+   
+   @Id
+   public String getCompInfoId() {
+      return compInfoId;
+   }
+   
+   public void setCompInfoId(String newCompInfoId) {
+      compInfoId = newCompInfoId;
+   }
+   
+   @XmlElement(name="COMPONENT_ITEM")
+   public String getComponentItem() {
+      return componentItem;
+   }
+   
+   public void setComponentItem(String newComponentItem) {
+      componentItem = newComponentItem;
+   }
+   
+   @XmlElement(name="QUANTITY_PER_ASSMBLY")
+   public int getQuantityPerAssmbly() {
+      return quantityPerAssmbly;
+   }
+   
+   public void setQuantityPerAssmbly(int newQuantityPerAssmbly) {
+      quantityPerAssmbly = newQuantityPerAssmbly;
+   }
+   
+   @XmlElement(name="COMPONENT_YIELD_FACTOR")
+   public float getComponentYieldFactor() {
+      return componentYieldFactor;
+   }
+   
+   public void setComponentYieldFactor(float newComponentYieldFactor) {
+      componentYieldFactor = newComponentYieldFactor;
+   }
+   
+   @XmlElement(name="MATERIAL_COSTS")
+   public float getMaterialCosts() {
+      return materialCosts;
+   }
+   
+   public void setMaterialCosts(float newMaterialCosts) {
+      materialCosts = newMaterialCosts;
+   }
+   
+   public String getProcessContractNum() {
+      return processContractNum;
+   }
+   
+   public void setProcessContractNum(String newProcessContractNum) {
+      processContractNum = newProcessContractNum;
+   }
+   
+	private String importId;
+	@Transient
+	@XmlElement(name = "IMPORT_ID")
+	public String getImportId() {
+		return importId;
+	}
+	public void setImportId(String importId) {
+		this.importId = importId;
+	}
+	
+	private String sourceCode;
+	@Transient
+	@XmlElement(name = "SOURCE_CODE")
+	public String getSourceCode() {
+		return sourceCode;
+	}
+	public void setSourceCode(String sourceCode) {
+		this.sourceCode = sourceCode;
+	}
+	
+	private String sourceHeaderId;
+	@Transient
+	@XmlElement(name = "SOURCE_HEADER_ID")
+	public String getSourceHeaderId() {
+		return sourceHeaderId;
+	}
+	public void setSourceHeaderId(String sourceHeaderId) {
+		this.sourceHeaderId = sourceHeaderId;
+	}
+	
+	private String sourceLineId;
+	@Transient
+	@XmlElement(name = "SOURCE_LINE_ID")
+	public String getSourceLineId() {
+		return sourceLineId;
+	}
+	public void setSourceLineId(String sourceLineId) {
+		this.sourceLineId = sourceLineId;
+	}
+
+}

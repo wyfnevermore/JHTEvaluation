@@ -1,0 +1,34 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building web Maven Webapp 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> tomcat-maven-plugin:1.1:run (default-cli) > compile @ web >>>
+[INFO] Downloading: http://maven.aliyun.com/nexus/content/groups/public/commons-lang/commons-lang/2.6/commons-lang-2.6.pom
+[INFO] Downloaded: http://maven.aliyun.com/nexus/content/groups/public/commons-lang/commons-lang/2.6/commons-lang-2.6.pom (18 KB at 46.2 KB/sec)
+[INFO] Downloading: http://maven.aliyun.com/nexus/content/groups/public/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.pom
+[INFO] Downloaded: http://maven.aliyun.com/nexus/content/groups/public/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.pom (11 KB at 70.1 KB/sec)
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ web ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ web ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] <<< tomcat-maven-plugin:1.1:run (default-cli) < compile @ web <<<
+[INFO] 
+[INFO] --- tomcat-maven-plugin:1.1:run (default-cli) @ web ---
+[INFO] Running war on http://localhost:8080/web
+[INFO] Creating Tomcat server configuration at D:\codenew\JHTMiddleware\web\target\tomcat
+三月 16, 2017 2:58:04 下午 org.apache.catalina.startup.Embedded start
+信息: Starting tomcat server
+三月 16, 2017 2:58:04 下午 org.apache.catalina.core.StandardEngine start
+信息: Starting Servlet Engine: Apache Tomcat/6.0.29
+三月 16, 2017 2:58:05 下午 org.apache.catalina.core.ApplicationContext log
+信息: Initializing Spring root WebApplicationContext
+三月 16, 2017 2:58:08 下午 org.apache.coyote.http11.Http11Protocol init
+信息: Initializing Coyote HTTP/1.1 on http-8080
+三月 16, 2017 2:58:08 下午 org.apache.coyote.http11.Http11Protocol start
+信息: Starting Coyote HTTP/1.1 on http-8080

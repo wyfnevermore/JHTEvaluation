@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登录页</title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<script type="text/javascript" src="Script/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+
+	</head>
+	<body>
+		<div id="login_header">
+			<div id="login_title"> </div>
+		</div>
+		<div id="login_main">
+			<div id="right_Login_Alert">
+			<h1>万斯集团业务报价系统</h1> 
+			<h2>JHT GROUP QUOTE SYSTEM</h2>  
+        <form action="home.jsp" method="post"> 
+            <input class="name" type="text" required="required" placeholder="用户名" name="u"></input>  
+            <input class="name" type="password" required="required" placeholder="密码" name="p"></input>
+            <button class="but" type="submit"></button>  
+        </form>  
+			</div>
+			</div>
+		
+		<div id="login_footer">
+			
+		</div>
+	</body>
+</html>

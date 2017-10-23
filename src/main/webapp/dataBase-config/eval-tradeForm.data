@@ -1,0 +1,7 @@
+[
+  {"tradeFormt":"CFR"},
+  {"tradeFormt":"CIF"},
+  {"tradeFormt":"CPT"},
+  {"tradeFormt":"FCA"},
+  {"tradeFormt":"FOB"}
+]

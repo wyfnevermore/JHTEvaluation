@@ -1,0 +1,129 @@
+package com.chinaias.controller.evaluation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.chinaias.entity.Component;
+import com.chinaias.entity.EvalDetail;
+import com.chinaias.service.IBaseService;
+import com.chinaias.service.IComponentService;
+import com.chinaias.service.IEvalDetailService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+@Controller
+@Scope("prototype") 
+public class productDescriptionController {
+	@Resource
+	private IBaseService<EvalDetail> baseService;
+	@Resource
+	private IComponentService componentService;
+	@Resource
+	private IEvalDetailService evalDetailService;
+	
+	@Resource
+	private IBaseService<Component> baseComponentService;
+	
+	@RequestMapping("/productDescription.do")
+	public ModelAndView Dictionary() throws Exception { 
+		ModelAndView mav = new ModelAndView(); 
+		mav.setViewName("productDescription");
+		return mav;
+	}
+	
+
+	@RequestMapping(value="/componentSave.do",method=RequestMethod.POST,produces="application/text;charset=utf-8")
+	@ResponseBody
+	public String componentSave(@RequestBody List<Component> compoList,String evalDetailID,String workDesc,String packageDesc,String evalRemark,String lightColorVal,String middleColorVal,String deepColorVal) {
+		String result = "{'flag':false,'msg':''}";
+		try{
+			String listId = this.componentService.save(compoList.get(0));
+			Component compoTmpc = new Component();
+			for(int i=1;i<compoList.size();i++){
+				compoTmpc = compoList.get(i);
+				compoTmpc.setListID(listId);
+				this.componentService.save(compoTmpc);
+			}
+			result = "{'flag':true,'msg':''}";
+			EvalDetail evalDetail = new EvalDetail();
+			evalDetail.setId(evalDetailID);
+			evalDetail.setCompListID(listId);
+			evalDetail.setLightColorVal(Float.parseFloat(lightColorVal));
+			evalDetail.setMiddleColorVal(Float.parseFloat(middleColorVal));
+			evalDetail.setDeepColorVal(Float.parseFloat(deepColorVal));
+			evalDetail.setWorkDesc(new String(workDesc.getBytes("ISO-8859-1"),"UTF-8"));
+			evalDetail.setPackageDesc(new String(packageDesc.getBytes("ISO-8859-1"),"UTF-8"));
+			evalDetail.setEvalRemark(new String(evalRemark.getBytes("ISO-8859-1"),"UTF-8"));
+			this.evalDetailService.addEvalDetail(evalDetail);
+		}catch(Exception e){
+			result = "{'flag':false,'msg':'"+e.getMessage()+"'}";
+			e.printStackTrace();
+		}
+		return result;        	    	
+	}
+	
+	@RequestMapping(value="/evalDetailUpdate.do",method=RequestMethod.POST,produces="application/text;charset=utf-8")
+	@ResponseBody
+	public String evalDetailUpdate(EvalDetail evalDetail) {
+		String result = "{'flag':false,'msg':''}";
+		try{
+			EvalDetail evalDetailInit = new EvalDetail();
+			evalDetailInit = evalDetailService.findById(evalDetail.getId());
+			evalDetailInit.setCompListID(evalDetail.getCompListID());
+			evalDetailInit.setWorkDesc(evalDetail.getWorkDesc());
+			evalDetailInit.setPackageDesc(evalDetail.getPackageDesc());
+			evalDetailInit.setEvalRemark(evalDetail.getEvalRemark());
+			evalDetailService.updateEvalDetail(evalDetailInit);
+			result = "{'flag':true,'msg':''}";
+		}catch(Exception e){
+			result = "{'flag':false,'msg':'"+e.getMessage()+"'}";
+			e.printStackTrace();
+		}
+		return result;        	    	
+	}
+	
+	@RequestMapping(value="/getCompListByDetailID.do",method=RequestMethod.POST,produces="application/text;charset=utf-8")
+	@ResponseBody
+	public String getCompListByDetailID(String evalDetailID) {
+		String result = "{'flag':false,'msg':''}";
+		try{
+			List<Component> compList = new ArrayList<Component>();
+			compList = componentService.getCompListByDetailID(evalDetailID);
+			
+			JSONObject jobj = new JSONObject();
+			jobj.accumulate("flag", true);
+			jobj.accumulate("msg", JSONArray.fromObject(compList));
+			result = jobj.toString();
+		}catch(Exception e){
+			result = "{'flag':false,'msg':'"+e.getMessage()+"'}";
+			e.printStackTrace();
+		}
+		return result;        	    	
+	}
+
+	
+	
+	@RequestMapping(value="/componentUpdate.do",method=RequestMethod.POST,produces="application/text;charset=utf-8")
+	@ResponseBody
+	public String componentUpdate(@RequestBody List<Component> compoList,String evalDetailID,String workDesc,String packageDesc,String evalRemark,String lightColorVal,String middleColorVal,String deepColorVal) {
+		String result = "{'flag':false,'msg':''}";
+		try{
+			
+		}catch(Exception e){
+			result = "{'flag':false,'msg':'"+e.getMessage()+"'}";
+			e.printStackTrace();
+		}
+		return result;        	    	
+	}
+}
